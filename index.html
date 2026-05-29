@@ -157,6 +157,25 @@
   .icon-btn:hover { background: var(--chip-bg); color: var(--ink); }
   .icon-btn:active { transform: translateY(1px); }
   .icon-btn svg { width: 18px; height: 18px; }
+  .lang-btn {
+    height: 38px;
+    padding: 0 12px;
+    display: inline-flex; align-items: center; gap: 5px;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    transition: background-color .15s, color .15s, border-color .15s, transform .15s;
+  }
+  .lang-btn:hover { background: var(--chip-bg); border-color: color-mix(in oklab, var(--line) 60%, var(--ink) 20%); }
+  .lang-btn:active { transform: translateY(1px); }
+  .lang-btn .lang-active { color: var(--accent); }
+  .lang-btn .lang-sep { color: var(--line); }
+  .lang-btn .lang-other { color: var(--ink-mute); }
   .menu-btn { display: none; }
 
   @media (max-width: 760px) {
@@ -327,63 +346,6 @@
   }
   .hero-contacts a:hover { color: var(--accent); }
   .hero-contacts svg { width: 14px; height: 14px; }
-
-  /* Avatar */
-  .avatar-stack {
-    position: relative;
-    width: 100%;
-    max-width: 340px;
-    aspect-ratio: 1;
-    margin-inline: auto;
-  }
-  .avatar {
-    position: absolute; inset: 0;
-    border-radius: 50%;
-    background:
-      conic-gradient(from 200deg at 50% 50%,
-        color-mix(in oklab, var(--accent) 60%, transparent),
-        var(--accent-2),
-        color-mix(in oklab, var(--accent) 20%, transparent),
-        var(--accent));
-    padding: 4px;
-    box-shadow: var(--shadow-lg);
-  }
-  .avatar-inner {
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    background: var(--bg-sunk);
-    background-image:
-      repeating-linear-gradient(45deg,
-        color-mix(in oklab, var(--ink) 6%, transparent) 0 1px,
-        transparent 1px 14px);
-    display: grid; place-items: center;
-    color: var(--ink-mute);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .avatar-badge {
-    position: absolute;
-    bottom: 8%; right: -6%;
-    background: var(--bg-elev);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 10px 14px;
-    box-shadow: var(--shadow-md);
-    font-size: 12px;
-    display: flex; align-items: center; gap: 8px;
-    animation: float 5s ease-in-out infinite;
-  }
-  .avatar-badge .flag {
-    width: 18px; height: 12px; border-radius: 2px;
-    background: linear-gradient(to right, #009246 33%, #ffffff 33% 66%, #ce2b37 66%);
-    border: 1px solid color-mix(in oklab, var(--ink) 10%, transparent);
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-  }
 
   /* -----------------------------------------------------------
      About
@@ -623,6 +585,12 @@
     font-weight: 600;
     margin-left: 8px;
   }
+  .certs-subtitle {
+    font-size: 16px; font-weight: 600; color: var(--ink-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-top: 48px; margin-bottom: 0;
+    font-family: var(--font-mono);
+  }
 
   /* -----------------------------------------------------------
      Skills
@@ -752,11 +720,6 @@
   }
   footer a { color: var(--ink-mute); }
   footer a:hover { color: var(--accent); }
-  .built {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--ink-mute);
-  }
 
   /* -----------------------------------------------------------
      Reveal-on-scroll
@@ -773,7 +736,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
-    .status-dot, .avatar-badge { animation: none; }
+    .status-dot { animation: none; }
     html { scroll-behavior: auto; }
   }
 
@@ -796,15 +759,20 @@
     </a>
 
     <nav class="nav-links" aria-label="Navigazione principale">
-      <a href="#about">Chi sono</a>
-      <a href="#projects">Progetti</a>
-      <a href="#experience">Esperienza</a>
-      <a href="#education">Formazione</a>
-      <a href="#skills">Competenze</a>
-      <a href="#contact">Contatti</a>
+      <a href="#about" data-i18n="nav.about">Chi sono</a>
+      <a href="#projects" data-i18n="nav.projects">Progetti</a>
+      <a href="#experience" data-i18n="nav.experience">Esperienza</a>
+      <a href="#education" data-i18n="nav.education">Formazione</a>
+      <a href="#skills" data-i18n="nav.skills">Competenze</a>
+      <a href="#contact" data-i18n="nav.contact">Contatti</a>
     </nav>
 
     <div class="nav-actions">
+      <button class="lang-btn" id="langBtn" aria-label="Cambia lingua">
+        <span class="lang-active">IT</span>
+        <span class="lang-sep">/</span>
+        <span class="lang-other">EN</span>
+      </button>
       <button class="icon-btn" id="themeBtn" aria-label="Cambia tema chiaro/scuro" title="Cambia tema">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"/></svg>
@@ -816,12 +784,12 @@
   </div>
   <div class="mobile-menu" id="mobileMenu">
     <nav aria-label="Menu mobile">
-      <a href="#about">Chi sono</a>
-      <a href="#projects">Progetti</a>
-      <a href="#experience">Esperienza</a>
-      <a href="#education">Formazione</a>
-      <a href="#skills">Competenze</a>
-      <a href="#contact">Contatti</a>
+      <a href="#about" data-i18n="nav.about">Chi sono</a>
+      <a href="#projects" data-i18n="nav.projects">Progetti</a>
+      <a href="#experience" data-i18n="nav.experience">Esperienza</a>
+      <a href="#education" data-i18n="nav.education">Formazione</a>
+      <a href="#skills" data-i18n="nav.skills">Competenze</a>
+      <a href="#contact" data-i18n="nav.contact">Contatti</a>
     </nav>
   </div>
 </header>
@@ -834,20 +802,20 @@
     <div class="hero-text">
       <div class="hero-status reveal">
         <span class="status-dot" aria-hidden="true"></span>
-        <span>Disponibile per nuove opportunità</span>
+        <span data-i18n="hero.status">Disponibile per nuove opportunità</span>
       </div>
-      <p class="hero-role reveal">Sviluppatore Software · Web &amp; Backend</p>
-      <h1 class="reveal">Costruisco software con <span class="accent">cura del dettaglio</span> e logica pulita.</h1>
-      <p class="hero-tag reveal">Sono Francesco, sviluppatore junior con esperienza in Python, C++ e tecnologie web tra cui Ruby on Rails. Mi concentro su applicazioni full-stack e desktop curate sia nell'architettura che nell'esperienza d'uso.</p>
+      <p class="hero-role reveal" data-i18n="hero.role">Sviluppatore Software · Web &amp; Backend</p>
+      <h1 class="reveal" data-i18n-html="hero.h1">Costruisco software con <span class="accent">cura del dettaglio</span> e logica pulita.</h1>
+      <p class="hero-tag reveal" data-i18n="hero.tag">Sono Francesco, sviluppatore junior con esperienza in Python, C++ e tecnologie web tra cui Ruby on Rails. Mi concentro su applicazioni full-stack e desktop curate sia nell'architettura che nell'esperienza d'uso.</p>
 
       <div class="hero-cta reveal">
         <a class="btn btn-primary" href="#projects">
-          Vedi i progetti
+          <span data-i18n="hero.cta.projects">Vedi i progetti</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <a class="btn btn-ghost" href="mailto:francesco.lapenna.d@gmail.com">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-          Scrivimi
+          <span data-i18n="hero.cta.email">Scrivimi</span>
         </a>
       </div>
 
@@ -874,9 +842,9 @@
 <section id="about" class="about">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="eyebrow"><span>01 — Profilo</span></div>
-      <h2 class="section-title">Chi sono</h2>
-      <p class="section-sub">Una sintesi del mio percorso, di ciò su cui mi piace lavorare e dell'approccio che porto in ogni progetto.</p>
+      <div class="eyebrow"><span data-i18n="about.eyebrow">01 — Profilo</span></div>
+      <h2 class="section-title" data-i18n="about.title">Chi sono</h2>
+      <p class="section-sub" data-i18n="about.sub">Una sintesi del mio percorso, di ciò su cui mi piace lavorare e dell'approccio che porto in ogni progetto.</p>
     </div>
     <div class="about-grid">
       <div class="quick-facts reveal">
@@ -885,7 +853,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <div>
-            <div class="fact-label">Sede</div>
+            <div class="fact-label" data-i18n="about.fact.location.label">Sede</div>
             <div class="fact-value">Mottola (TA) · Italia</div>
           </div>
         </div>
@@ -894,7 +862,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
           </div>
           <div>
-            <div class="fact-label">Disponibilità</div>
+            <div class="fact-label" data-i18n="about.fact.availability.label">Disponibilità</div>
             <div class="fact-value">Junior · Full-time / Remote</div>
           </div>
         </div>
@@ -903,8 +871,8 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"/></svg>
           </div>
           <div>
-            <div class="fact-label">Focus</div>
-            <div class="fact-value">Sviluppo Web · Backend</div>
+            <div class="fact-label" data-i18n="about.fact.focus.label">Focus</div>
+            <div class="fact-value" data-i18n="about.fact.focus.value">Sviluppo Web · Backend</div>
           </div>
         </div>
         <div class="fact">
@@ -912,16 +880,16 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/><circle cx="12" cy="12" r="10"/></svg>
           </div>
           <div>
-            <div class="fact-label">Lingue</div>
-            <div class="fact-value">Italiano · Inglese C1</div>
+            <div class="fact-label" data-i18n="about.fact.languages.label">Lingue</div>
+            <div class="fact-value" data-i18n="about.fact.languages.value">Italiano · Inglese C1</div>
           </div>
         </div>
       </div>
 
       <div class="about-body reveal">
-        <p>Sono uno <strong>sviluppatore software junior</strong> con un forte interesse per lo sviluppo web e backend. La mia formazione in informatica all'Università di Padova mi ha dato basi solide in algoritmi, sistemi e progettazione del software; nei progetti accademici e personali ho coltivato un approccio pratico, iterativo e attento ai dettagli.</p>
-        <p>Lavoro con <strong>Python</strong>, <strong>C/C++</strong> e con tecnologie web come <strong>HTML, CSS e Ruby on Rails</strong>. Mi piace progettare applicazioni full-stack e desktop in cui architettura, design pulito e funzionalità pratica trovano un equilibrio chiaro: il codice deve fare il suo lavoro, e farlo in modo leggibile.</p>
-        <p>Nella mia tesi all'UNIPD ho lavorato su <strong>autenticazione di messaggi a livello fisico</strong> in sistemi Visible Light Communication, sviluppando in C su Linux e su hardware BeagleBone. Mi affascinano i progetti dove software, sistema e dominio reale si toccano.</p>
+        <p data-i18n-html="about.body.p1">Sono uno <strong>sviluppatore software junior</strong> con un forte interesse per lo sviluppo web e backend. La mia formazione in informatica all'Università di Padova mi ha dato basi solide in algoritmi, sistemi e progettazione del software; nei progetti accademici e personali ho coltivato un approccio pratico, iterativo e attento ai dettagli.</p>
+        <p data-i18n-html="about.body.p2">Lavoro con <strong>Python</strong>, <strong>C/C++</strong> e con tecnologie web come <strong>HTML, CSS e Ruby on Rails</strong>. Mi piace progettare applicazioni full-stack e desktop in cui architettura, design pulito e funzionalità pratica trovano un equilibrio chiaro: il codice deve fare il suo lavoro, e farlo in modo leggibile.</p>
+        <p data-i18n-html="about.body.p3">Nella mia tesi all'UNIPD ho lavorato su <strong>autenticazione di messaggi a livello fisico</strong> in sistemi Visible Light Communication, sviluppando in C su Linux e su hardware BeagleBone. Mi affascinano i progetti dove software, sistema e dominio reale si toccano.</p>
       </div>
     </div>
   </div>
@@ -932,12 +900,12 @@
   <div class="wrap">
     <div class="section-head projects-head reveal">
       <div>
-        <div class="eyebrow"><span>02 — Selezione</span></div>
-        <h2 class="section-title">Progetti</h2>
-        <p class="section-sub">Una selezione di lavori accademici e personali che riflette ciò su cui mi piace lavorare: full-stack, sistemi, dati.</p>
+        <div class="eyebrow"><span data-i18n="projects.eyebrow">02 — Selezione</span></div>
+        <h2 class="section-title" data-i18n="projects.title">Progetti</h2>
+        <p class="section-sub" data-i18n="projects.sub">Una selezione di lavori accademici e personali che riflette ciò su cui mi piace lavorare: full-stack, sistemi, dati.</p>
       </div>
       <a class="btn btn-ghost" href="https://drive.google.com/drive/folders/1ieHm3hIy9s03QwAlpEz71MsJhTcojr1s" target="_blank" rel="noopener">
-        Tutte le demo
+        <span data-i18n="projects.demos.btn">Tutte le demo</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
       </a>
     </div>
@@ -949,8 +917,8 @@
           <span class="project-year">2025</span>
           <span class="project-num">P / 01</span>
         </div>
-        <h3>Web App di Project Management</h3>
-        <p>Applicazione full-stack per la gestione di task e progetti: autenticazione utenti con ruoli, CRUD completo, filtri dinamici, ordinamento e una dashboard interattiva con temi personalizzabili.</p>
+        <h3 data-i18n="projects.p1.title">Web App di Project Management</h3>
+        <p data-i18n="projects.p1.desc">Applicazione full-stack per la gestione di task e progetti: autenticazione utenti con ruoli, CRUD completo, filtri dinamici, ordinamento e una dashboard interattiva con temi personalizzabili.</p>
         <div class="project-meta">
           <div class="stack">
             <span class="chip">Ruby on Rails</span>
@@ -960,7 +928,7 @@
           </div>
         </div>
         <a class="project-link" href="https://drive.google.com/drive/folders/1ieHm3hIy9s03QwAlpEz71MsJhTcojr1s" target="_blank" rel="noopener">
-          Demo del progetto
+          <span data-i18n="projects.link">Demo del progetto</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
         </a>
       </article>
@@ -970,8 +938,8 @@
           <span class="project-year">2023 — 2024</span>
           <span class="project-num">P / 02</span>
         </div>
-        <h3>Simulatore Sensori Smart Home</h3>
-        <p>Applicazione desktop per simulare e gestire sensori smart home con visualizzazione dati in tempo reale, CRUD e ricerca live. GUI in Qt, architettura MVC e applicazione di design pattern.</p>
+        <h3 data-i18n="projects.p2.title">Simulatore Sensori Smart Home</h3>
+        <p data-i18n="projects.p2.desc">Applicazione desktop per simulare e gestire sensori smart home con visualizzazione dati in tempo reale, CRUD e ricerca live. GUI in Qt, architettura MVC e applicazione di design pattern.</p>
         <div class="project-meta">
           <div class="stack">
             <span class="chip">C++</span>
@@ -981,7 +949,7 @@
           </div>
         </div>
         <a class="project-link" href="https://drive.google.com/drive/folders/1ieHm3hIy9s03QwAlpEz71MsJhTcojr1s" target="_blank" rel="noopener">
-          Demo del progetto
+          <span data-i18n="projects.link">Demo del progetto</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
         </a>
       </article>
@@ -991,8 +959,8 @@
           <span class="project-year">2024 — 2025</span>
           <span class="project-num">P / 03</span>
         </div>
-        <h3>Assistente AI per Documenti Aziendali</h3>
-        <p>Web app con pipeline <strong>RAG</strong> per interrogare documenti in linguaggio naturale: integrazione con LLM, generazione di riassunti e architettura modulare pensata per essere estesa.</p>
+        <h3 data-i18n="projects.p3.title">Assistente AI per Documenti Aziendali</h3>
+        <p data-i18n-html="projects.p3.desc">Web app con pipeline <strong>RAG</strong> per interrogare documenti in linguaggio naturale: integrazione con LLM, generazione di riassunti e architettura modulare pensata per essere estesa.</p>
         <div class="project-meta">
           <div class="stack">
             <span class="chip">Python</span>
@@ -1001,7 +969,7 @@
           </div>
         </div>
         <a class="project-link" href="https://drive.google.com/drive/folders/1ieHm3hIy9s03QwAlpEz71MsJhTcojr1s" target="_blank" rel="noopener">
-          Demo del progetto
+          <span data-i18n="projects.link">Demo del progetto</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
         </a>
       </article>
@@ -1011,8 +979,8 @@
           <span class="project-year">2024 — 2025</span>
           <span class="project-num">P / 04</span>
         </div>
-        <h3>Web App E-commerce Videogiochi</h3>
-        <p>Piattaforma per la navigazione e l'acquisto di videogiochi: frontend dinamico, logica backend in PHP e UI responsive curata, dalla home al carrello.</p>
+        <h3 data-i18n="projects.p4.title">Web App E-commerce Videogiochi</h3>
+        <p data-i18n="projects.p4.desc">Piattaforma per la navigazione e l'acquisto di videogiochi: frontend dinamico, logica backend in PHP e UI responsive curata, dalla home al carrello.</p>
         <div class="project-meta">
           <div class="stack">
             <span class="chip">HTML</span>
@@ -1022,7 +990,7 @@
           </div>
         </div>
         <a class="project-link" href="https://drive.google.com/drive/folders/1ieHm3hIy9s03QwAlpEz71MsJhTcojr1s" target="_blank" rel="noopener">
-          Demo del progetto
+          <span data-i18n="projects.link">Demo del progetto</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
         </a>
       </article>
@@ -1032,27 +1000,27 @@
           <span class="project-year">2023 — 2024</span>
           <span class="project-num">P / 05</span>
         </div>
-        <h3>Database Relazionale</h3>
-        <p>Progettazione end-to-end di un database: dallo schema concettuale a quello logico, con ottimizzazione delle query, normalizzazione, indicizzazione e modellazione ER. Un esercizio completo di pensiero strutturato sui dati.</p>
+        <h3 data-i18n="projects.p5.title">Database Relazionale</h3>
+        <p data-i18n="projects.p5.desc">Progettazione end-to-end di un database: dallo schema concettuale a quello logico, con ottimizzazione delle query, normalizzazione, indicizzazione e modellazione ER. Un esercizio completo di pensiero strutturato sui dati.</p>
         <div class="project-meta">
           <div class="stack">
             <span class="chip">PostgreSQL</span>
             <span class="chip">SQL</span>
-            <span class="chip">Modellazione ER</span>
-            <span class="chip">Normalizzazione</span>
+            <span class="chip" data-i18n="projects.p5.chip.er">Modellazione ER</span>
+            <span class="chip" data-i18n="projects.p5.chip.norm">Normalizzazione</span>
           </div>
         </div>
         <a class="project-link" href="https://drive.google.com/drive/folders/1ieHm3hIy9s03QwAlpEz71MsJhTcojr1s" target="_blank" rel="noopener">
-          Demo del progetto
+          <span data-i18n="projects.link">Demo del progetto</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
         </a>
       </article>
     </div>
 
     <div class="demos-banner reveal">
-      <p><strong>Tutte le demo</strong> dei progetti sono raccolte in una cartella Drive pubblica.</p>
+      <p data-i18n-html="demos.banner.text"><strong>Tutte le demo</strong> dei progetti sono raccolte in una cartella Drive pubblica.</p>
       <a class="btn btn-accent" href="https://drive.google.com/drive/folders/1ieHm3hIy9s03QwAlpEz71MsJhTcojr1s" target="_blank" rel="noopener">
-        Apri la cartella Drive
+        <span data-i18n="demos.banner.btn">Apri la cartella Drive</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
       </a>
     </div>
@@ -1063,18 +1031,18 @@
 <section id="experience" class="about">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="eyebrow"><span>03 — Percorso</span></div>
-      <h2 class="section-title">Esperienza</h2>
-      <p class="section-sub">Esperienze formative e di ricerca che hanno definito il mio modo di lavorare sul software.</p>
+      <div class="eyebrow"><span data-i18n="exp.eyebrow">03 — Percorso</span></div>
+      <h2 class="section-title" data-i18n="exp.title">Esperienza</h2>
+      <p class="section-sub" data-i18n="exp.sub">Esperienze formative e di ricerca che hanno definito il mio modo di lavorare sul software.</p>
     </div>
 
     <div class="timeline">
       <article class="tl-item reveal">
-        <div class="tl-date">Mar 2025 — Lug 2025</div>
+        <div class="tl-date" data-i18n="exp.tl.date">Mar 2025 — Lug 2025</div>
         <div class="tl-body">
-          <h3>Stage e Tesi di Laurea</h3>
-          <div class="tl-place">Dipartimento di Matematica · Università di Padova</div>
-          <p>Ricerca e implementazione di <strong>autenticazione dei messaggi a livello fisico</strong> tramite One-Time Password nel framework OpenVLC. Obiettivo: prevenire attacchi di injection e replay nei sistemi VLC (Visible Light Communication). Sviluppo in C su Linux, sperimentazione su hardware BeagleBone.</p>
+          <h3 data-i18n="exp.tl.title">Stage e Tesi di Laurea</h3>
+          <div class="tl-place" data-i18n="exp.tl.place">Dipartimento di Matematica · Università di Padova</div>
+          <p data-i18n-html="exp.tl.desc">Ricerca e implementazione di <strong>autenticazione dei messaggi a livello fisico</strong> tramite One-Time Password nel framework OpenVLC. Obiettivo: prevenire attacchi di injection e replay nei sistemi VLC (Visible Light Communication). Sviluppo in C su Linux, sperimentazione su hardware BeagleBone.</p>
           <div class="tl-extras">
             <span class="tl-tag">C / Linux</span>
             <span class="tl-tag">OpenVLC</span>
@@ -1091,41 +1059,41 @@
 <section id="education">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="eyebrow"><span>04 — Studi</span></div>
-      <h2 class="section-title">Formazione</h2>
-      <p class="section-sub">Un percorso lineare in scienze e informatica, con attenzione costante ai fondamentali.</p>
+      <div class="eyebrow"><span data-i18n="edu.eyebrow">04 — Studi</span></div>
+      <h2 class="section-title" data-i18n="edu.title">Formazione</h2>
+      <p class="section-sub" data-i18n="edu.sub">Un percorso lineare in scienze e informatica, con attenzione costante ai fondamentali.</p>
     </div>
 
     <div class="timeline">
       <article class="tl-item reveal">
         <div class="tl-date">2022 — 2025</div>
         <div class="tl-body">
-          <h3>Laurea Triennale in Informatica <span class="tl-grade">100 / 110</span></h3>
+          <h3 data-i18n-html="edu.tl1.title">Laurea Triennale in Informatica <span class="tl-grade">100 / 110</span></h3>
           <div class="tl-place">Università di Padova</div>
-          <p><strong>Tesi:</strong> «Autenticazione dei Messaggi a Livello Fisico per OpenVLC». Studio dei fondamenti di programmazione, algoritmi e strutture dati, basi di dati, ingegneria del software, reti e sistemi operativi.</p>
+          <p data-i18n-html="edu.tl1.desc"><strong>Tesi:</strong> «Autenticazione dei Messaggi a Livello Fisico per OpenVLC». Studio dei fondamenti di programmazione, algoritmi e strutture dati, basi di dati, ingegneria del software, reti e sistemi operativi.</p>
         </div>
       </article>
 
       <article class="tl-item reveal">
-        <div class="tl-date">Diploma</div>
+        <div class="tl-date" data-i18n="edu.tl2.date">Diploma</div>
         <div class="tl-body">
-          <h3>Liceo Scientifico <span class="tl-grade">100 / 100</span></h3>
-          <div class="tl-place">Indirizzo scientifico</div>
-          <p>Formazione di base in matematica, fisica e scienze; primo approccio all'informatica e al pensiero computazionale.</p>
+          <h3 data-i18n-html="edu.tl2.title">Liceo Scientifico <span class="tl-grade">100 / 100</span></h3>
+          <div class="tl-place" data-i18n="edu.tl2.place">Indirizzo scientifico</div>
+          <p data-i18n="edu.tl2.desc">Formazione di base in matematica, fisica e scienze; primo approccio all'informatica e al pensiero computazionale.</p>
         </div>
       </article>
 
     </div>
 
-    <h3 style="font-size: 16px; font-weight: 600; color: var(--ink-mute); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 48px; margin-bottom: 0; font-family: var(--font-mono);">Certificazioni</h3>
+    <h3 class="certs-subtitle" data-i18n="certs.subtitle">Certificazioni</h3>
 
     <div class="timeline">
       <article class="tl-item reveal">
         <div class="tl-date">Apr 2026</div>
         <div class="tl-body">
-          <h3>Inglese — Cambridge C1 Advanced</h3>
+          <h3 data-i18n="certs.tl1.title">Inglese — Cambridge C1 Advanced</h3>
           <div class="tl-place">Cambridge English</div>
-          <p>Livello C1 in lingua inglese, sia tecnica che generale; uso quotidiano nella lettura di documentazione e nella collaborazione su progetti.</p>
+          <p data-i18n="certs.tl1.desc">Livello C1 in lingua inglese, sia tecnica che generale; uso quotidiano nella lettura di documentazione e nella collaborazione su progetti.</p>
         </div>
       </article>
     </div>
@@ -1136,9 +1104,9 @@
 <section id="skills" class="about">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="eyebrow"><span>05 — Stack</span></div>
-      <h2 class="section-title">Competenze</h2>
-      <p class="section-sub">Strumenti con cui lavoro abitualmente, organizzati per dominio.</p>
+      <div class="eyebrow"><span data-i18n="skills.eyebrow">05 — Stack</span></div>
+      <h2 class="section-title" data-i18n="skills.title">Competenze</h2>
+      <p class="section-sub" data-i18n="skills.sub">Strumenti con cui lavoro abitualmente, organizzati per dominio.</p>
     </div>
 
     <div class="skills-grid">
@@ -1148,7 +1116,7 @@
           <div class="skill-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg>
           </div>
-          <h4>Linguaggi</h4>
+          <h4 data-i18n="skills.card.languages">Linguaggi</h4>
         </div>
         <div class="skill-list">
           <span class="chip">Python</span>
@@ -1164,7 +1132,7 @@
           <div class="skill-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/></svg>
           </div>
-          <h4>Web</h4>
+          <h4 data-i18n="skills.card.web">Web</h4>
         </div>
         <div class="skill-list">
           <span class="chip">HTML</span>
@@ -1179,7 +1147,7 @@
           <div class="skill-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
           </div>
-          <h4>Database</h4>
+          <h4 data-i18n="skills.card.database">Database</h4>
         </div>
         <div class="skill-list">
           <span class="chip">SQL</span>
@@ -1192,7 +1160,7 @@
           <div class="skill-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           </div>
-          <h4>Framework &amp; Librerie</h4>
+          <h4 data-i18n="skills.card.frameworks">Framework &amp; Librerie</h4>
         </div>
         <div class="skill-list">
           <span class="chip">Ruby on Rails</span>
@@ -1206,7 +1174,7 @@
           <div class="skill-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></svg>
           </div>
-          <h4>Strumenti</h4>
+          <h4 data-i18n="skills.card.tools">Strumenti</h4>
         </div>
         <div class="skill-list">
           <span class="chip">Git</span>
@@ -1222,11 +1190,11 @@
           <div class="skill-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
           </div>
-          <h4>Lingue</h4>
+          <h4 data-i18n="skills.card.spoken">Lingue</h4>
         </div>
         <div class="skill-list">
-          <span class="chip">Italiano · Madrelingua</span>
-          <span class="chip">Inglese · C1 Cambridge</span>
+          <span class="chip" data-i18n="skills.chip.italian">Italiano · Madrelingua</span>
+          <span class="chip" data-i18n="skills.chip.english">Inglese · C1 Cambridge</span>
         </div>
       </div>
 
@@ -1239,13 +1207,13 @@
   <div class="wrap">
     <div class="contact-card reveal">
       <div>
-        <div class="eyebrow"><span>06 — Parliamone</span></div>
-        <h2>Lavoriamo insieme<br/>al prossimo progetto.</h2>
-        <p>Sono aperto a opportunità junior, collaborazioni e stage nel mondo dello sviluppo web e backend. Scrivimi: rispondo entro un giorno.</p>
+        <div class="eyebrow"><span data-i18n="contact.eyebrow">06 — Parliamone</span></div>
+        <h2 data-i18n-html="contact.title">Lavoriamo insieme<br/>al prossimo progetto.</h2>
+        <p data-i18n="contact.desc">Sono aperto a opportunità junior, collaborazioni e stage nel mondo dello sviluppo web e backend. Scrivimi: rispondo entro un giorno.</p>
         <div class="contact-actions">
           <a class="btn btn-primary" href="mailto:francesco.lapenna.d@gmail.com">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-            Invia email
+            <span data-i18n="contact.email.btn">Invia email</span>
           </a>
         </div>
       </div>
@@ -1265,7 +1233,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
           </div>
           <div>
-            <div class="fact-label">Telefono</div>
+            <div class="fact-label" data-i18n="contact.phone.label">Telefono</div>
             <div class="fact-value">+39 392 604 5612</div>
           </div>
         </a>
@@ -1301,6 +1269,213 @@
 <script>
   // Year
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---------------- Translations ----------------
+  const translations = {
+    it: {
+      'nav.about':       'Chi sono',
+      'nav.projects':    'Progetti',
+      'nav.experience':  'Esperienza',
+      'nav.education':   'Formazione',
+      'nav.skills':      'Competenze',
+      'nav.contact':     'Contatti',
+
+      'hero.status': 'Disponibile per nuove opportunità',
+      'hero.role':   'Sviluppatore Software · Web & Backend',
+      'hero.h1':     'Costruisco software con <span class="accent">cura del dettaglio</span> e logica pulita.',
+      'hero.tag':    'Sono Francesco, sviluppatore junior con esperienza in Python, C++ e tecnologie web tra cui Ruby on Rails. Mi concentro su applicazioni full-stack e desktop curate sia nell\'architettura che nell\'esperienza d\'uso.',
+      'hero.cta.projects': 'Vedi i progetti',
+      'hero.cta.email':    'Scrivimi',
+
+      'about.eyebrow': '01 — Profilo',
+      'about.title':   'Chi sono',
+      'about.sub':     'Una sintesi del mio percorso, di ciò su cui mi piace lavorare e dell\'approccio che porto in ogni progetto.',
+      'about.fact.location.label':     'Sede',
+      'about.fact.availability.label': 'Disponibilità',
+      'about.fact.focus.label':        'Focus',
+      'about.fact.focus.value':        'Sviluppo Web · Backend',
+      'about.fact.languages.label':    'Lingue',
+      'about.fact.languages.value':    'Italiano · Inglese C1',
+      'about.body.p1': 'Sono uno <strong>sviluppatore software junior</strong> con un forte interesse per lo sviluppo web e backend. La mia formazione in informatica all\'Università di Padova mi ha dato basi solide in algoritmi, sistemi e progettazione del software; nei progetti accademici e personali ho coltivato un approccio pratico, iterativo e attento ai dettagli.',
+      'about.body.p2': 'Lavoro con <strong>Python</strong>, <strong>C/C++</strong> e con tecnologie web come <strong>HTML, CSS e Ruby on Rails</strong>. Mi piace progettare applicazioni full-stack e desktop in cui architettura, design pulito e funzionalità pratica trovano un equilibrio chiaro: il codice deve fare il suo lavoro, e farlo in modo leggibile.',
+      'about.body.p3': 'Nella mia tesi all\'UNIPD ho lavorato su <strong>autenticazione di messaggi a livello fisico</strong> in sistemi Visible Light Communication, sviluppando in C su Linux e su hardware BeagleBone. Mi affascinano i progetti dove software, sistema e dominio reale si toccano.',
+
+      'projects.eyebrow':   '02 — Selezione',
+      'projects.title':     'Progetti',
+      'projects.sub':       'Una selezione di lavori accademici e personali che riflette ciò su cui mi piace lavorare: full-stack, sistemi, dati.',
+      'projects.demos.btn': 'Tutte le demo',
+      'projects.link':      'Demo del progetto',
+      'projects.p1.title':  'Web App di Project Management',
+      'projects.p1.desc':   'Applicazione full-stack per la gestione di task e progetti: autenticazione utenti con ruoli, CRUD completo, filtri dinamici, ordinamento e una dashboard interattiva con temi personalizzabili.',
+      'projects.p2.title':  'Simulatore Sensori Smart Home',
+      'projects.p2.desc':   'Applicazione desktop per simulare e gestire sensori smart home con visualizzazione dati in tempo reale, CRUD e ricerca live. GUI in Qt, architettura MVC e applicazione di design pattern.',
+      'projects.p3.title':  'Assistente AI per Documenti Aziendali',
+      'projects.p3.desc':   'Web app con pipeline <strong>RAG</strong> per interrogare documenti in linguaggio naturale: integrazione con LLM, generazione di riassunti e architettura modulare pensata per essere estesa.',
+      'projects.p4.title':  'Web App E-commerce Videogiochi',
+      'projects.p4.desc':   'Piattaforma per la navigazione e l\'acquisto di videogiochi: frontend dinamico, logica backend in PHP e UI responsive curata, dalla home al carrello.',
+      'projects.p5.title':  'Database Relazionale',
+      'projects.p5.desc':   'Progettazione end-to-end di un database: dallo schema concettuale a quello logico, con ottimizzazione delle query, normalizzazione, indicizzazione e modellazione ER. Un esercizio completo di pensiero strutturato sui dati.',
+      'projects.p5.chip.er':   'Modellazione ER',
+      'projects.p5.chip.norm': 'Normalizzazione',
+      'demos.banner.text': '<strong>Tutte le demo</strong> dei progetti sono raccolte in una cartella Drive pubblica.',
+      'demos.banner.btn':  'Apri la cartella Drive',
+
+      'exp.eyebrow': '03 — Percorso',
+      'exp.title':   'Esperienza',
+      'exp.sub':     'Esperienze formative e di ricerca che hanno definito il mio modo di lavorare sul software.',
+      'exp.tl.date':  'Mar 2025 — Lug 2025',
+      'exp.tl.title': 'Stage e Tesi di Laurea',
+      'exp.tl.place': 'Dipartimento di Matematica · Università di Padova',
+      'exp.tl.desc':  'Ricerca e implementazione di <strong>autenticazione dei messaggi a livello fisico</strong> tramite One-Time Password nel framework OpenVLC. Obiettivo: prevenire attacchi di injection e replay nei sistemi VLC (Visible Light Communication). Sviluppo in C su Linux, sperimentazione su hardware BeagleBone.',
+
+      'edu.eyebrow': '04 — Studi',
+      'edu.title':   'Formazione',
+      'edu.sub':     'Un percorso lineare in scienze e informatica, con attenzione costante ai fondamentali.',
+      'edu.tl1.title': 'Laurea Triennale in Informatica <span class="tl-grade">100 / 110</span>',
+      'edu.tl1.desc':  '<strong>Tesi:</strong> «Autenticazione dei Messaggi a Livello Fisico per OpenVLC». Studio dei fondamenti di programmazione, algoritmi e strutture dati, basi di dati, ingegneria del software, reti e sistemi operativi.',
+      'edu.tl2.date':  'Diploma',
+      'edu.tl2.title': 'Liceo Scientifico <span class="tl-grade">100 / 100</span>',
+      'edu.tl2.place': 'Indirizzo scientifico',
+      'edu.tl2.desc':  'Formazione di base in matematica, fisica e scienze; primo approccio all\'informatica e al pensiero computazionale.',
+      'certs.subtitle':  'Certificazioni',
+      'certs.tl1.title': 'Inglese — Cambridge C1 Advanced',
+      'certs.tl1.desc':  'Livello C1 in lingua inglese, sia tecnica che generale; uso quotidiano nella lettura di documentazione e nella collaborazione su progetti.',
+
+      'skills.eyebrow':        '05 — Stack',
+      'skills.title':          'Competenze',
+      'skills.sub':            'Strumenti con cui lavoro abitualmente, organizzati per dominio.',
+      'skills.card.languages': 'Linguaggi',
+      'skills.card.web':       'Web',
+      'skills.card.database':  'Database',
+      'skills.card.frameworks':'Framework & Librerie',
+      'skills.card.tools':     'Strumenti',
+      'skills.card.spoken':    'Lingue',
+      'skills.chip.italian':   'Italiano · Madrelingua',
+      'skills.chip.english':   'Inglese · C1 Cambridge',
+
+      'contact.eyebrow':    '06 — Parliamone',
+      'contact.title':      'Lavoriamo insieme<br/>al prossimo progetto.',
+      'contact.desc':       'Sono aperto a opportunità junior, collaborazioni e stage nel mondo dello sviluppo web e backend. Scrivimi: rispondo entro un giorno.',
+      'contact.email.btn':  'Invia email',
+      'contact.phone.label':'Telefono',
+    },
+    en: {
+      'nav.about':       'About',
+      'nav.projects':    'Projects',
+      'nav.experience':  'Experience',
+      'nav.education':   'Education',
+      'nav.skills':      'Skills',
+      'nav.contact':     'Contact',
+
+      'hero.status': 'Available for new opportunities',
+      'hero.role':   'Software Developer · Web & Backend',
+      'hero.h1':     'I build software with <span class="accent">attention to detail</span> and clean logic.',
+      'hero.tag':    'I\'m Francesco, a junior developer with experience in Python, C++ and web technologies including Ruby on Rails. I focus on full-stack and desktop applications that are carefully crafted in both architecture and user experience.',
+      'hero.cta.projects': 'View projects',
+      'hero.cta.email':    'Get in touch',
+
+      'about.eyebrow': '01 — Profile',
+      'about.title':   'About me',
+      'about.sub':     'A summary of my background, what I enjoy working on, and the approach I bring to every project.',
+      'about.fact.location.label':     'Location',
+      'about.fact.availability.label': 'Availability',
+      'about.fact.focus.label':        'Focus',
+      'about.fact.focus.value':        'Web Development · Backend',
+      'about.fact.languages.label':    'Languages',
+      'about.fact.languages.value':    'Italian · English C1',
+      'about.body.p1': 'I\'m a <strong>junior software developer</strong> with a strong interest in web and backend development. My Computer Science degree at the University of Padova gave me solid foundations in algorithms, systems and software design; through academic and personal projects I\'ve developed a practical, iterative, detail-oriented approach.',
+      'about.body.p2': 'I work with <strong>Python</strong>, <strong>C/C++</strong> and web technologies such as <strong>HTML, CSS and Ruby on Rails</strong>. I enjoy designing full-stack and desktop applications where architecture, clean design and practical functionality strike a clear balance: code should do its job, and do it readably.',
+      'about.body.p3': 'In my thesis at UNIPD I worked on <strong>physical-layer message authentication</strong> in Visible Light Communication systems, developing in C on Linux using BeagleBone hardware. I\'m drawn to projects where software, system and real-world domain intersect.',
+
+      'projects.eyebrow':   '02 — Selection',
+      'projects.title':     'Projects',
+      'projects.sub':       'A selection of academic and personal work that reflects what I enjoy building: full-stack, systems, data.',
+      'projects.demos.btn': 'All demos',
+      'projects.link':      'Project demo',
+      'projects.p1.title':  'Project Management Web App',
+      'projects.p1.desc':   'Full-stack application for task and project management: role-based user authentication, full CRUD, dynamic filters, sorting and an interactive dashboard with customisable themes.',
+      'projects.p2.title':  'Smart Home Sensor Simulator',
+      'projects.p2.desc':   'Desktop application to simulate and manage smart home sensors with real-time data visualisation, CRUD and live search. Qt GUI, MVC architecture and design patterns.',
+      'projects.p3.title':  'AI Assistant for Business Documents',
+      'projects.p3.desc':   'Web app with a <strong>RAG</strong> pipeline to query documents in natural language: LLM integration, summary generation and a modular architecture designed for extensibility.',
+      'projects.p4.title':  'Video Game E-commerce Web App',
+      'projects.p4.desc':   'Platform for browsing and purchasing video games: dynamic frontend, PHP backend logic and a polished responsive UI, from home page to cart.',
+      'projects.p5.title':  'Relational Database',
+      'projects.p5.desc':   'End-to-end database design: from conceptual to logical schema, with query optimisation, normalisation, indexing and ER modelling. A complete exercise in structured data thinking.',
+      'projects.p5.chip.er':   'ER Modelling',
+      'projects.p5.chip.norm': 'Normalisation',
+      'demos.banner.text': '<strong>All demos</strong> are collected in a public Google Drive folder.',
+      'demos.banner.btn':  'Open Drive folder',
+
+      'exp.eyebrow': '03 — Experience',
+      'exp.title':   'Experience',
+      'exp.sub':     'Formative and research experiences that shaped the way I work on software.',
+      'exp.tl.date':  'Mar 2025 — Jul 2025',
+      'exp.tl.title': 'Internship & Bachelor\'s Thesis',
+      'exp.tl.place': 'Department of Mathematics · University of Padova',
+      'exp.tl.desc':  'Research and implementation of <strong>physical-layer message authentication</strong> via One-Time Passwords in the OpenVLC framework. Goal: prevent injection and replay attacks in VLC (Visible Light Communication) systems. Development in C on Linux, experimentation on BeagleBone hardware.',
+
+      'edu.eyebrow': '04 — Education',
+      'edu.title':   'Education',
+      'edu.sub':     'A linear path through science and computer science, with constant focus on fundamentals.',
+      'edu.tl1.title': 'BSc in Computer Science <span class="tl-grade">100 / 110</span>',
+      'edu.tl1.desc':  '<strong>Thesis:</strong> "Physical-Layer Message Authentication for OpenVLC". Covered fundamentals of programming, algorithms and data structures, databases, software engineering, networks and operating systems.',
+      'edu.tl2.date':  'High School Diploma',
+      'edu.tl2.title': 'Scientific High School <span class="tl-grade">100 / 100</span>',
+      'edu.tl2.place': 'Scientific track',
+      'edu.tl2.desc':  'Foundation in mathematics, physics and sciences; first exposure to computer science and computational thinking.',
+      'certs.subtitle':  'Certifications',
+      'certs.tl1.title': 'English — Cambridge C1 Advanced',
+      'certs.tl1.desc':  'C1 level in English, both technical and general; daily use for reading documentation and collaborating on projects.',
+
+      'skills.eyebrow':        '05 — Stack',
+      'skills.title':          'Skills',
+      'skills.sub':            'Tools I work with regularly, organised by domain.',
+      'skills.card.languages': 'Languages',
+      'skills.card.web':       'Web',
+      'skills.card.database':  'Database',
+      'skills.card.frameworks':'Frameworks & Libraries',
+      'skills.card.tools':     'Tools',
+      'skills.card.spoken':    'Spoken Languages',
+      'skills.chip.italian':   'Italian · Native',
+      'skills.chip.english':   'English · C1 Cambridge',
+
+      'contact.eyebrow':    '06 — Let\'s talk',
+      'contact.title':      'Let\'s work together<br/>on the next project.',
+      'contact.desc':       'I\'m open to junior opportunities, collaborations and internships in web and backend development. Drop me a line — I reply within a day.',
+      'contact.email.btn':  'Send email',
+      'contact.phone.label':'Phone',
+    }
+  };
+
+  function applyLang(lang) {
+    const t = translations[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.textContent = t[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.getAttribute('data-i18n-html');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    document.documentElement.lang = lang;
+    const btn = document.getElementById('langBtn');
+    const active = btn.querySelector('.lang-active');
+    const other  = btn.querySelector('.lang-other');
+    if (lang === 'it') { active.textContent = 'IT'; other.textContent = 'EN'; }
+    else               { active.textContent = 'EN'; other.textContent = 'IT'; }
+  }
+
+  // ---------------- Lang ----------------
+  const LANG_KEY = 'fl-lang';
+  let currentLang = localStorage.getItem(LANG_KEY) || 'it';
+  applyLang(currentLang);
+
+  document.getElementById('langBtn').addEventListener('click', () => {
+    currentLang = currentLang === 'it' ? 'en' : 'it';
+    applyLang(currentLang);
+    localStorage.setItem(LANG_KEY, currentLang);
+  });
 
   // ---------------- Theme ----------------
   const root = document.documentElement;
@@ -1354,7 +1529,6 @@
   } else {
     items.forEach(el => el.classList.add('in'));
   }
-
 </script>
 </body>
 </html>
